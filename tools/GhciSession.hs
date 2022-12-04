@@ -7,7 +7,7 @@ module GhciSession
     ) where
 
 import Control.Exception (bracket)
-import Control.Monad (liftM, mapM_, when)
+import Control.Monad (liftM, mapM_, void, when)
 import Control.Monad.Reader (MonadReader(..), ReaderT(..), asks)
 import Control.Monad.State (MonadState(..), StateT(..), gets, modify)
 import Control.Monad.Trans (MonadIO(..))
@@ -61,13 +61,12 @@ newtype Session a = Session (ReaderT SessionConfig (StateT SessionState IO) a)
               MonadState SessionState)
 
 runSession :: SessionConfig -> SessionState -> Session a -> IO ()
-runSession cfg st (Session a) = runStateT (runReaderT a cfg) st >> return ()
+runSession cfg st (Session a) = void $ runStateT (runReaderT a cfg) st
 
 io :: IO a -> Session a
 io = liftIO
 
 runScript :: SessionOptions -> FilePath -> FilePath -> IO (Maybe ProcessStatus)
-
 runScript opts tgtDir name = do
     script <- readFile name
     bracket getCurrentDirectory
