@@ -5,6 +5,7 @@
 
 import Control.Monad (unless)
 import Data.List (intersperse)
+import Prelude hiding ((<>))
 import Text.PrettyPrint.HughesPJ
 
 type Date = String
