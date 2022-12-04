@@ -136,7 +136,7 @@ websup: $(extras-web)
 
 web: websup webfigs beta
 
-webfigs:
+webfigs: ../xsl/system-xsl
 	cp -rf figs $(obj-websup)
 	cp ../xsl/system-xsl/images/*.png $(obj-websup)/figs
 	cp -f ../web/icons/*.png $(obj-websup)/figs
