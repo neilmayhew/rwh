@@ -1,7 +1,8 @@
+{-# LANGUAGE TypeApplications #-}
 import Control.Arrow (first)
-import Control.Exception (bracket)
+import Control.Exception (IOException, bracket, catch)
 import Control.Monad (foldM)
-import Control.Monad.State (State(..), get, put)
+import Control.Monad.State (State(..), get, put, runState)
 import Data.List (isInfixOf, unfoldr)
 import System.Environment (getArgs)
 import System.IO (IOMode(..), hClose, hGetLine, openFile)
@@ -20,7 +21,7 @@ foo s = case s =~ "(<para)([^>]*)>" of
           after' <- foo after
           return (before : (tag ++ attrs ++ " id=\"" ++ toDocBookID n ++
                             "\">") : after')
-    _ -> fail "borked regex"
+    _ -> error "borked regex"
 
 toDocBookID :: Int -> String
 toDocBookID n = "x_" ++ unfoldr digit (n, firstSyms)
@@ -46,5 +47,5 @@ reading path = bracket (openFile path ReadMode) hClose (fmap read . hGetLine)
 main :: IO ()
 main = do
   let idPath = ".biggest.id"
-  n <- catch (reading idPath) (const (return 0))
+  n <- catch (reading idPath) (const @_ @IOException (return 0))
   getArgs >>= foldM processFile n >>= writeFile idPath . show

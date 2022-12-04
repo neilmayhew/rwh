@@ -16,7 +16,7 @@ import Data.Char (isSpace)
 import Data.List (inits, isPrefixOf, tails)
 
 anyM :: Monad m => (a -> Bool) -> [a] -> m a
-anyM _ []                 = fail "no match"
+anyM _ []                 = error "no match"
 anyM p (x:xs) | p x       = return x
               | otherwise = anyM p xs
 

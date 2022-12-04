@@ -14,7 +14,7 @@ module Pty
 
 import Control.Monad (when)
 import Foreign.C.Error (throwErrnoIfMinus1_)
-import Foreign.C.Types (CInt)
+import Foreign.C.Types (CInt(..))
 import System.IO (Handle, IOMode(..))
 import System.Posix.IO ( closeFd, dupTo, stdInput, stdOutput, stdError )
 import System.Posix.Process (createSession, executeFile, forkProcess)
@@ -22,7 +22,7 @@ import System.Posix.Terminal (getTerminalName)
 import System.Posix.Types
 #if __GLASGOW_HASKELL__ >= 608
 import System.Posix.Terminal (getSlaveTerminalName, openPseudoTerminal)
-import GHC.Handle (fdToHandle')
+import GHC.IO.Handle.FD (fdToHandle')
 #else
 import Foreign.C.Error (throwErrnoIfNull)
 import Foreign.C.String (CString, peekCString)

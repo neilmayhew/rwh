@@ -57,7 +57,7 @@ mkState h s = SessionState
               }
 
 newtype Session a = Session (ReaderT SessionConfig (StateT SessionState IO) a)
-    deriving (Monad, MonadIO, MonadReader SessionConfig,
+    deriving (Functor, Applicative, Monad, MonadIO, MonadFail, MonadReader SessionConfig,
               MonadState SessionState)
 
 runSession :: SessionConfig -> SessionState -> Session a -> IO ()

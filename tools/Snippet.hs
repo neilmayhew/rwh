@@ -66,7 +66,7 @@ ps _ _ [] = do
     s <- get
     case state s of
       Outside -> (return . reverse . snippets) s
-      Inside _ name -> fail ("unterminated snippet " ++ showB name)
+      Inside _ name -> error ("unterminated snippet " ++ showB name)
 ps start end (l:ls) = do
     let mStart = maybeTag start l
         mEnd = maybeTag end l
@@ -74,7 +74,7 @@ ps start end (l:ls) = do
     case state s of
       Inside acc name -> do
         whenJust mStart $ \nested ->
-            fail ("nested start " ++ showB nested ++ " inside " ++
+            error ("nested start " ++ showB nested ++ " inside " ++
                   showB name)
         maybe (put s{state = Inside (l:acc) name})
               (\endName ->
@@ -83,12 +83,12 @@ ps start end (l:ls) = do
                               state = Outside,
                               snippets = Snippet name ((B.unlines . reverse) acc) :
                                          snippets s}
-                   else fail ("mismatch: start " ++ showB name ++
+                   else error ("mismatch: start " ++ showB name ++
                               " ends with " ++ showB endName))
               mEnd
       Outside -> do
         whenJust mEnd $ \endName ->
-            fail ("end " ++ showB endName ++ " without start")
+            error ("end " ++ showB endName ++ " without start")
         whenJust mStart $ \startName ->
             put s{state = Inside [] startName}
     ps start end ls
