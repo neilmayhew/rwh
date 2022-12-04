@@ -77,6 +77,8 @@ TEMPLATE_DIRS = (
     os.path.join(ROOT, 'templates')
 )
 
+TEMPLATES = []
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

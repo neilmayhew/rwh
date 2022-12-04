@@ -4,13 +4,13 @@
 # tries the default template path for a particular installation, then
 # looks for templates in the filesystem.
 
-from django.template import Context, TemplateDoesNotExist
-from django.template.loader import get_template, get_template_from_string
-from django.core.management import setup_environ
-import rwh.settings as settings
+from django.template import Context, Engine, TemplateDoesNotExist
+from django.template.loader import get_template
+from django.conf import settings
+import rwh.settings
 import sys
 
-setup_environ(settings)
+settings.configure(rwh.settings)
 c = Context()
 
 if len(sys.argv) == 2:
@@ -26,9 +26,9 @@ else:
     sys.exit(1)
     
 try:
-    t = get_template(in_name)
+    t = Engine().get_template(in_name)
 except TemplateDoesNotExist:
-    t = get_template_from_string(open(in_name).read(), name=in_name)
+    t = Engine().from_string(template_code=open(in_name).read())
 if out_fp is None:
     out_fp = open(out_name, 'w')
 out_fp.write(t.render(c))
