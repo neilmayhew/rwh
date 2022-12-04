@@ -17,7 +17,7 @@ try:
     from secrets import DATABASE_ENGINE, DATABASE_NAME, DATABASE_USER, \
          DATABASE_PASSWORD, DATABASE_HOST, DATABASE_PORT, SECRET_KEY
 except ImportError:
-    print >> sys.stderr, 'Faking up some database configuration for you'
+    print('Faking up some database configuration for you', file=sys.stderr)
     DATABASE_ENGINE = 'sqlite3'
     DATABASE_NAME = os.path.join(ROOT, '.database.sqlite3')
     DATABASE_USER = ''

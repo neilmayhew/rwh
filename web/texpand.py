@@ -22,7 +22,7 @@ elif len(sys.argv) == 3:
     out_name = sys.argv[2]
     out_fp = None
 else:
-    print >> sys.stderr, 'Usage: %s template-file [output-file]'
+    print('Usage: %s template-file [output-file]' % sys.argv[0], file=sys.stderr)
     sys.exit(1)
     
 try:
